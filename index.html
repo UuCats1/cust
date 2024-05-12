@@ -2,11 +2,19 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>全球时间</title>
+    <title>全球时钟</title>
     <style>
+      :root {
+        --clock-background: #000;
+        --clock-hand-color: #fff;
+        --clock-face-color: #333;
+        --clock-size: 300px;
+        --animation-duration: 1s;
+      }
+
       body {
-        background-color: #000;
-        color: #fff;
+        background-color: var(--clock-background);
+        color: var(--clock-hand-color);
         font-family: Arial, sans-serif;
       }
 
@@ -15,11 +23,11 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 300px;
-        height: 300px;
-        border: 5px solid #fff;
+        width: var(--clock-size);
+        height: var(--clock-size);
+        border: 5px solid var(--clock-hand-color);
         border-radius: 50%;
-        box-shadow: 0 0 10px #000;
+        box-shadow: 0 0 10px var(--clock-face-color);
       }
 
       .clock-face {
@@ -28,7 +36,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: #000;
+        background-color: var(--clock-face-color);
         border-radius: 50%;
       }
 
@@ -39,8 +47,9 @@
         transform: translate(-50%, -50%);
         width: 2px;
         height: 100px;
-        background-color: #fff;
+        background-color: var(--clock-hand-color);
         border-radius: 1px;
+        transition: transform var(--animation-duration) ease-in-out;
       }
 
       .hour-hand {
@@ -53,7 +62,7 @@
 
       .second-hand {
         transform-origin: bottom;
-        animation: second 60s linear infinite;
+        animation: second var(--animation-duration) linear infinite;
       }
 
       @keyframes second {
@@ -65,25 +74,12 @@
         }
       }
 
-      .timezones-container {
+      .digital-clock {
         position: absolute;
-        top: 10px;
-        left: 10px;
-        width: 200px;
-        height: 200px;
-        background-color: #000;
-        border: 1px solid #fff;
-        border-radius: 5px;
-        padding: 10px;
-        overflow-y: scroll;
-      }
-
-      .timezone-item {
-        cursor: pointer;
-      }
-
-      .timezone-item:hover {
-        background-color: #444;
+        top: calc(var(--clock-size) + 20px);
+        left: 50%;
+        transform: translate(-50%, 0);
+        font-size: 24px;
       }
     </style>
   </head>
@@ -96,15 +92,7 @@
       <div class="clock-hand second-hand"></div>
     </div>
 
-    <div class="timezones-container">
-      <div class="timezone-item" data-timezone="America/Los_Angeles">洛杉矶</div>
-      <div class="timezone-item" data-timezone="America/New_York">纽约</div>
-      <div class="timezone-item" data-timezone="Europe/London">伦敦</div>
-      <div class="timezone-item" data-timezone="Europe/Paris">巴黎</div>
-      <div class="timezone-item" data-timezone="Asia/Tokyo">东京</div>
-      <div class="timezone-item" data-timezone="Asia/Shanghai">上海</div>
-      <div class="timezone-item" data-timezone="Australia/Sydney">悉尼</div>
-    </div>
+    <div class="digital-clock"></div>
 
     <script>
       // 获取时钟元素
@@ -113,52 +101,39 @@
       const hourHand = clockContainer.querySelector('.hour-hand');
       const minuteHand = clockContainer.querySelector('.minute-hand');
       const secondHand = clockContainer.querySelector('.second-hand');
+      const digitalClock = document.querySelector('.digital-clock');
 
       // 设置时钟大小
       const clockSize = clockContainer.offsetWidth;
       clockFace.style.width = `${clockSize}px`;
       clockFace.style.height = `${clockSize}px`;
 
-      // 获取时区元素
-      const timezonesContainer = document.querySelector('.timezones-container');
-      const timezoneItems = timezonesContainer.querySelectorAll('.timezone-item');
-
-      // 默认时区
-      let timezone = 'America/Los_Angeles';
-
       // 更新时钟
       function updateClock() {
-        // 获取当前时间（根据时区）
+        // 获取当前时间
         const now = new Date();
-        const tzOffset = now.getTimezoneOffset() / 60;
-        const localTime = new Date(now.getTime() + tzOffset * 3600000);
 
         // 计算时针角度
-        const hour = localTime.getHours();
-        const hourAngle = (hour % 12) * 30 + localTime.getMinutes() / 2;
+        const hour = now.getHours();
+        const hourAngle = (hour % 12) * 30 + now.getMinutes() / 2;
         hourHand.style.transform = `rotate(${hourAngle}deg)`;
 
         // 计算分针角度
-        const minute = localTime.getMinutes();
-        const minuteAngle = minute * 6 + localTime.getSeconds() / 10;
+        const minute = now.getMinutes();
+        const minuteAngle = minute * 6 + now.getSeconds() / 10;
         minuteHand.style.transform = `rotate(${minuteAngle}deg)`;
 
         // 计算秒针角度
-        const second = localTime.getSeconds();
+        const second = now.getSeconds();
         const secondAngle = second * 6;
         secondHand.style.transform = `rotate(${secondAngle}deg)`;
+
+        // 更新数字时钟
+        digitalClock.textContent = now.toLocaleTimeString();
       }
 
       // 每秒更新一次时钟
       setInterval(updateClock, 1000);
-
-      // 切换时区
-      timezoneItems.forEach(item => {
-        item.addEventListener('click', e => {
-          timezone = item.dataset.timezone;
-          updateClock();  // 立即更新时钟
-        });
-      });
     </script>
   </body>
 </html>
