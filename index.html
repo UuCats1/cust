@@ -7,6 +7,21 @@
   <h1>全球动态时间</h1>
   <div id="time"></div>
 
+  <select id="timezone">
+    <option value="UTC">UTC</option>
+    <option value="CST">-06:00 CST</option>
+    <option value="EST">-05:00 EST</option>
+    <option value="MST">-07:00 MST</option>
+    <option value="PST">-08:00 PST</option>
+    <option value="CET">+01:00 CET</option>
+    <option value="EET">+02:00 EET</option>
+    <option value="IST">+05:30 IST</option>
+    <option value="JST">+09:00 JST</option>
+    <option value="KST">+09:00 KST</option>
+    <option value="AEDT">+11:00 AEDT</option>
+    <option value="CST">UTC+8:00 CST</option>
+  </select>
+
   <script>
     // 获取当前时间
     const now = new Date();
@@ -27,6 +42,7 @@
       { name: 'JST', offset: 9 * 60 },
       { name: 'KST', offset: 9 * 60 },
       { name: 'AEDT', offset: 11 * 60 },
+      { name: 'CST', offset: 8 * 60 },
     ];
 
     // 更新时间
@@ -34,8 +50,16 @@
       // 获取当前时间
       const now = new Date();
 
+      // 获取选定的时区
+      const selectedTimezone = document.getElementById('timezone').value;
+
+      // 查找选定时区的偏移量
+      const timezoneOffset = timezones.find(
+        (timezone) => timezone.name === selectedTimezone
+      ).offset;
+
       // 调整时区偏移量
-      const localTime = new Date(now.getTime() + offset * 60 * 1000);
+      const localTime = new Date(now.getTime() + timezoneOffset * 60 * 1000);
 
       // 格式化时间
       const formattedTime = localTime.toLocaleTimeString('en-US', {
@@ -52,6 +76,9 @@
 
     // 每秒更新时间
     setInterval(updateTime, 1000);
+
+    // 添加时区切换事件侦听器
+    document.getElementById('timezone').addEventListener('change', updateTime);
   </script>
 </body>
 </html>
