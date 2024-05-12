@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>全球时间</title>
+    <title>全球动态时钟</title>
     <style>
       body {
         background-color: #000;
@@ -156,7 +156,7 @@
       timezoneItems.forEach(item => {
         item.addEventListener('click', e => {
           timezone = item.dataset.timezone;
-          updateClock();
+          updateClock();  // 立即更新时钟
         });
       });
     </script>
