@@ -1,86 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>游戏</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <meta charset="UTF-8" />
+  <title>DVD Logo</title>
   <style>
     body {
-      background-color: #000;
-      color: #fff;
-      font-family: Arial, Helvetica, sans-serif;
-      text-align: center;
       margin: 0;
-      padding: 0;
+      height: 100vh;
+    }
+    #dvd-logo {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: url(dvd-logo.png) no-repeat;
+      animation: float 5s infinite linear;
     }
 
-    .container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 500px;
-      height: 500px;
-    }
-
-    .player {
-      position: absolute;
-      width: 50px;
-      height: 50px;
-      background-color: #f00;
-      border: 1px solid #fff;
-      border-radius: 50%;
-      left: 225px;
-      top: 225px;
-    }
-
-    .enemy {
-      position: absolute;
-      width: 50px;
-      height: 50px;
-      background-color: #0f0;
-      border: 1px solid #fff;
-      border-radius: 50%;
+    @keyframes float {
+      0% {
+        transform: translate(0, 0);
+      }
+      25% {
+        transform: translate(100%, 100%);
+      }
+      50% {
+        transform: translate(200%, 0);
+      }
+      75% {
+        transform: translate(100%, -100%);
+      }
+      100% {
+        transform: translate(0, 0);
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="player"></div>
-    <div class="enemy"></div>
-  </div>
-
-  <script>
-    var player = document.querySelector('.player');
-    var enemy = document.querySelector('.enemy');
-    var moveSpeed = 5;
-
-    document.addEventListener('keydown', function(e) {
-      switch (e.keyCode) {
-        case 37: // left
-          player.style.left = parseInt(player.style.left) - moveSpeed + 'px';
-          break;
-        case 38: // up
-          player.style.top = parseInt(player.style.top) - moveSpeed + 'px';
-          break;
-        case 39: // right
-          player.style.left = parseInt(player.style.left) + moveSpeed + 'px';
-          break;
-        case 40: // down
-          player.style.top = parseInt(player.style.top) + moveSpeed + 'px';
-          break;
-      }
-    });
-
-    function moveEnemy() {
-      var x = Math.random() * (450 - 50) + 50;
-      var y = Math.random() * (450 - 50) + 50;
-
-      enemy.style.left = x + 'px';
-      enemy.style.top = y + 'px';
-    }
-
-    setInterval(moveEnemy, 1000);
-  </script>
+  <div id="dvd-logo"></div>
 </body>
 </html>
