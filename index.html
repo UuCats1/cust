@@ -1,89 +1,88 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>全球动态时间</title>
+  <title>俄罗美博客</title>
+  <style>
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
 </head>
 <body>
-  <h1>全球动态时间</h1>
-  <div id="time"></div>
-
-  <select id="timezone">
-    <option value="UTC">UTC</option>
-    <option value="CST">-06:00 CST</option>
-    <option value="EST">-05:00 EST</option>
-    <option value="MST">-07:00 MST</option>
-    <option value="PST">-08:00 PST</option>
-    <option value="CET">+01:00 CET</option>
-    <option value="EET">+02:00 EET</option>
-    <option value="IST">+05:30 IST</option>
-    <option value="JST">+09:00 JST</option>
-    <option value="KST">+09:00 KST</option>
-    <option value="AEDT">+11:00 AEDT</option>
-    <option value="CST">+8:00 CST</option>
-  </select>
+  <canvas id="canvas"></canvas>
 
   <script>
-    // 获取当前时间
-    const now = new Date();
+    // 获取画布元素
+    const canvas = document.getElementById('canvas');
 
-    // 获取时区偏移量（以分钟为单位）
-    const offset = now.getTimezoneOffset();
+    // 获取画布上下文
+    const ctx = canvas.getContext('2d');
 
-    // 创建时区列表
-    const timezones = [
-      { name: 'UTC', offset: 0 },
-      { name: 'CST', offset: -6 * 60 },
-      { name: 'EST', offset: -5 * 60 },
-      { name: 'MST', offset: -7 * 60 },
-      { name: 'PST', offset: -8 * 60 },
-      { name: 'CET', offset: 1 * 60 },
-      { name: 'EET', offset: 2 * 60 },
-      { name: 'IST', offset: 5.5 * 60 },
-      { name: 'JST', offset: 9 * 60 },
-      { name: 'KST', offset: 9 * 60 },
-      { name: 'AEDT', offset: 11 * 60 },
-      { name: 'CST', offset: 8 * 60 },
-    ];
+    // 设置画布大小
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    // 更新时间
-    const updateTime = () => {
-      // 获取当前时间
-      const now = new Date();
+    // 创建颜色数组
+    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff'];
 
-      // 获取选定的时区
-      const selectedTimezone = document.getElementById('timezone').value;
+    // 创建粒子数组
+    const particles = [];
+    for (let i = 0; i < 1000; i++) {
+      const particle = {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: Math.random() * 2 - 1,
+        vy: Math.random() * 2 - 1,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        radius: Math.random() * 5 + 1,
+      };
+      particles.push(particle);
+    }
 
-      // 查找选定时区的偏移量
-      const timezoneOffset = timezones.find(
-        (timezone) => timezone.name === selectedTimezone
-      ).offset;
+    // 更新函数
+    const update = () => {
+      // 清除画布
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // 调整时区偏移量
-      const localTime = new Date(now.getTime() + timezoneOffset * 60 * 1000);
+      // 更新粒子
+      for (let i = 0; i < particles.length; i++) {
+        const particle = particles[i];
 
-      // 格式化时间
-      const formattedTime = localTime.toLocaleTimeString('en-US', {
-        timeZone: 'UTC',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: true,
-      });
+        // 更新位置
+        particle.x += particle.vx;
+        particle.y += particle.vy;
 
-      // 更新时间显示
-      document.getElementById('time').innerHTML = formattedTime;
+        // 边界检测
+        if (particle.x < 0 || particle.x > canvas.width) {
+          particle.vx *= -1;
+        }
+        if (particle.y < 0 || particle.y > canvas.height) {
+          particle.vy *= -1;
+        }
 
-      // 强制浏览器立即更新时间显示
-      document.getElementById('time').style.display = 'none';
-      document.getElementById('time').offsetHeight; // 强制浏览器应用样式更改
-      document.getElementById('time').style.display = 'block';
+        // 绘制粒子
+        ctx.beginPath();
+        ctx.fillStyle = particle.color;
+        ctx.arc(particle.x, particle.y, particle.radius, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+
+      // 请求下一次动画帧
+      requestAnimationFrame(update);
     };
 
-    // 每秒更新时间
-    setInterval(updateTime, 1000);
-
-    // 添加时区切换事件侦听器
-    document.getElementById('timezone').addEventListener('change', updateTime);
+    // 启动动画循环
+    update();
   </script>
 </body>
 </html>
