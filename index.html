@@ -1,30 +1,42 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>调用对端网站监控数据量</title>
+  <title>实时监控网站数据量</title>
 </head>
+
 <body>
-  <script type="text/javascript">
-    // 对端网站的 URL
-    const url = 'chat.sukas.site';
+  <script>
+    // 目标网站的 URL
+    const targetURL = 'ruus.top';
 
-    // 创建一个新的 Http 请求
-    const request = new XMLHttpRequest();
+    // 轮询间隔（以毫秒为单位）
+    const interval = 1000;
 
-    // 打开请求，使用 GET 方法并指定对端网站的 URL
-    request.open('GET', url, true);
+    // 存储数据量的变量
+    let dataVolume = 0;
 
-    // 监听请求状态变化的事件
-    request.onload = function() {
-      // 请求完成时，获取响应正文的长度
-      const dataSize = request.response.length;
+    // 定期调用目标网站并计算数据量
+    setInterval(() => {
+      fetch(targetURL)
+        .then((response) => response.text())
+        .then((data) => {
+          // 计算数据量（以字节为单位）
+          dataVolume = data.length;
 
-      // 将数据量打印到控制台
-      console.log(`对端网站 ${url} 的监控数据量为 ${dataSize} 字节。`);
-    };
-
-    // 发送请求
-    request.send();
+          // 在页面上显示数据量
+          document.getElementById('data-volume').textContent = dataVolume;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }, interval);
   </script>
+
+  <h1>网站数据量实时监控</h1>
+  <p>目标网站：<a href="targetURL">targetURL</a></p>
+  <p>轮询间隔：<span id="interval">${interval}ms</span></p>
+  <p>当前数据量：<span id="data-volume">0</span> 字节</p>
 </body>
+
 </html>
