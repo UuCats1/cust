@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>全球时钟</title>
+    <title>时钟</title>
     <style>
       :root {
         --clock-background: #000;
@@ -40,40 +40,6 @@
         border-radius: 50%;
       }
 
-      .clock-hand {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 2px;
-        height: 100px;
-        background-color: var(--clock-hand-color);
-        border-radius: 1px;
-        transition: transform var(--animation-duration) ease-in-out;
-      }
-
-      .hour-hand {
-        transform-origin: bottom;
-      }
-
-      .minute-hand {
-        transform-origin: bottom;
-      }
-
-      .second-hand {
-        transform-origin: bottom;
-        animation: second var(--animation-duration) linear infinite;
-      }
-
-      @keyframes second {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-
       .digital-clock {
         position: absolute;
         top: calc(var(--clock-size) + 20px);
@@ -87,9 +53,6 @@
   <body>
     <div class="clock-container">
       <div class="clock-face"></div>
-      <div class="clock-hand hour-hand"></div>
-      <div class="clock-hand minute-hand"></div>
-      <div class="clock-hand second-hand"></div>
     </div>
 
     <div class="digital-clock"></div>
@@ -98,9 +61,6 @@
       // 获取时钟元素
       const clockContainer = document.querySelector('.clock-container');
       const clockFace = clockContainer.querySelector('.clock-face');
-      const hourHand = clockContainer.querySelector('.hour-hand');
-      const minuteHand = clockContainer.querySelector('.minute-hand');
-      const secondHand = clockContainer.querySelector('.second-hand');
       const digitalClock = document.querySelector('.digital-clock');
 
       // 设置时钟大小
@@ -112,21 +72,6 @@
       function updateClock() {
         // 获取当前时间
         const now = new Date();
-
-        // 计算时针角度
-        const hour = now.getHours();
-        const hourAngle = (hour % 12) * 30 + now.getMinutes() / 2;
-        hourHand.style.transform = `rotate(${hourAngle}deg)`;
-
-        // 计算分针角度
-        const minute = now.getMinutes();
-        const minuteAngle = minute * 6 + now.getSeconds() / 10;
-        minuteHand.style.transform = `rotate(${minuteAngle}deg)`;
-
-        // 计算秒针角度
-        const second = now.getSeconds();
-        const secondAngle = second * 6;
-        secondHand.style.transform = `rotate(${secondAngle}deg)`;
 
         // 更新数字时钟
         digitalClock.textContent = now.toLocaleTimeString();
