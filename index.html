@@ -19,7 +19,7 @@
     <option value="JST">+09:00 JST</option>
     <option value="KST">+09:00 KST</option>
     <option value="AEDT">+11:00 AEDT</option>
-    <option value="CST">UTC+8:00 CST</option>
+    <option value="CST">+8:00 CST</option>
   </select>
 
   <script>
@@ -72,6 +72,11 @@
 
       // 更新时间显示
       document.getElementById('time').innerHTML = formattedTime;
+
+      // 强制浏览器立即更新时间显示
+      document.getElementById('time').style.display = 'none';
+      document.getElementById('time').offsetHeight; // 强制浏览器应用样式更改
+      document.getElementById('time').style.display = 'block';
     };
 
     // 每秒更新时间
