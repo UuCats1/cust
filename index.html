@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>全球动态时间</title>
+</head>
+<body>
+  <h1>全球动态时间</h1>
+  <div id="time"></div>
+
+  <script>
+    // 获取当前时间
+    const now = new Date();
+
+    // 获取时区偏移量（以分钟为单位）
+    const offset = now.getTimezoneOffset();
+
+    // 创建时区列表
+    const timezones = [
+      { name: 'UTC', offset: 0 },
+      { name: 'CST', offset: -6 * 60 },
+      { name: 'EST', offset: -5 * 60 },
+      { name: 'MST', offset: -7 * 60 },
+      { name: 'PST', offset: -8 * 60 },
+      { name: 'CET', offset: 1 * 60 },
+      { name: 'EET', offset: 2 * 60 },
+      { name: 'IST', offset: 5.5 * 60 },
+      { name: 'JST', offset: 9 * 60 },
+      { name: 'KST', offset: 9 * 60 },
+      { name: 'AEDT', offset: 11 * 60 },
+    ];
+
+    // 更新时间
+    const updateTime = () => {
+      // 获取当前时间
+      const now = new Date();
+
+      // 调整时区偏移量
+      const localTime = new Date(now.getTime() + offset * 60 * 1000);
+
+      // 格式化时间
+      const formattedTime = localTime.toLocaleTimeString('en-US', {
+        timeZone: 'UTC',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: true,
+      });
+
+      // 更新时间显示
+      document.getElementById('time').innerHTML = formattedTime;
+    };
+
+    // 每秒更新时间
+    setInterval(updateTime, 1000);
+  </script>
+</body>
+</html>
