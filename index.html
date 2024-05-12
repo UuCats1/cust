@@ -64,6 +64,27 @@
           transform: rotate(360deg);
         }
       }
+
+      .timezones-container {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 200px;
+        height: 200px;
+        background-color: #000;
+        border: 1px solid #fff;
+        border-radius: 5px;
+        padding: 10px;
+        overflow-y: scroll;
+      }
+
+      .timezone-item {
+        cursor: pointer;
+      }
+
+      .timezone-item:hover {
+        background-color: #444;
+      }
     </style>
   </head>
 
@@ -73,6 +94,16 @@
       <div class="clock-hand hour-hand"></div>
       <div class="clock-hand minute-hand"></div>
       <div class="clock-hand second-hand"></div>
+    </div>
+
+    <div class="timezones-container">
+      <div class="timezone-item" data-timezone="America/Los_Angeles">洛杉矶</div>
+      <div class="timezone-item" data-timezone="America/New_York">纽约</div>
+      <div class="timezone-item" data-timezone="Europe/London">伦敦</div>
+      <div class="timezone-item" data-timezone="Europe/Paris">巴黎</div>
+      <div class="timezone-item" data-timezone="Asia/Tokyo">东京</div>
+      <div class="timezone-item" data-timezone="Asia/Shanghai">上海</div>
+      <div class="timezone-item" data-timezone="Australia/Sydney">悉尼</div>
     </div>
 
     <script>
@@ -88,29 +119,46 @@
       clockFace.style.width = `${clockSize}px`;
       clockFace.style.height = `${clockSize}px`;
 
+      // 获取时区元素
+      const timezonesContainer = document.querySelector('.timezones-container');
+      const timezoneItems = timezonesContainer.querySelectorAll('.timezone-item');
+
+      // 默认时区
+      let timezone = 'America/Los_Angeles';
+
       // 更新时钟
       function updateClock() {
-        // 获取当前时间
+        // 获取当前时间（根据时区）
         const now = new Date();
+        const tzOffset = now.getTimezoneOffset() / 60;
+        const localTime = new Date(now.getTime() + tzOffset * 3600000);
 
         // 计算时针角度
-        const hour = now.getHours();
-        const hourAngle = (hour % 12) * 30 + now.getMinutes() / 2;
+        const hour = localTime.getHours();
+        const hourAngle = (hour % 12) * 30 + localTime.getMinutes() / 2;
         hourHand.style.transform = `rotate(${hourAngle}deg)`;
 
         // 计算分针角度
-        const minute = now.getMinutes();
-        const minuteAngle = minute * 6 + now.getSeconds() / 10;
+        const minute = localTime.getMinutes();
+        const minuteAngle = minute * 6 + localTime.getSeconds() / 10;
         minuteHand.style.transform = `rotate(${minuteAngle}deg)`;
 
         // 计算秒针角度
-        const second = now.getSeconds();
+        const second = localTime.getSeconds();
         const secondAngle = second * 6;
         secondHand.style.transform = `rotate(${secondAngle}deg)`;
       }
 
       // 每秒更新一次时钟
       setInterval(updateClock, 1000);
+
+      // 切换时区
+      timezoneItems.forEach(item => {
+        item.addEventListener('click', e => {
+          timezone = item.dataset.timezone;
+          updateClock();
+        });
+      });
     </script>
   </body>
 </html>
