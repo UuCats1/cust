@@ -1,42 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>数据监控</title>
+  <title>调用对端网站监控数据量</title>
 </head>
 <body>
-  <h1>数据监控</h1>
-  <div id="chart"></div>
-
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
-    google.charts.load('current', {packages: ['gauge']});
-    google.charts.setOnLoadCallback(drawChart);
+    // 对端网站的 URL
+    const url = 'chat.sukas.site';
 
-    function drawChart() {
+    // 创建一个新的 Http 请求
+    const request = new XMLHttpRequest();
 
-      var data = google.visualization.arrayToDataTable([
-        ['Label', 'Value'],
-        ['Data', 0]
-      ]);
+    // 打开请求，使用 GET 方法并指定对端网站的 URL
+    request.open('GET', url, true);
 
-      var options = {
-        width: 500, height: 140,
-        redFrom: 90, redTo: 100,
-        yellowFrom:75, yellowTo: 90,
-        minorTicks: 5
-      };
+    // 监听请求状态变化的事件
+    request.onload = function() {
+      // 请求完成时，获取响应正文的长度
+      const dataSize = request.response.length;
 
-      var chart = new google.visualization.Gauge(document.getElementById('chart'));
-      chart.draw(data, options);
+      // 将数据量打印到控制台
+      console.log(`对端网站 ${url} 的监控数据量为 ${dataSize} 字节。`);
+    };
 
-      setInterval(function() {
-        var randomValue = Math.floor(Math.random() * 100);
-        data.setValue(0, 1, randomValue);
-        chart.draw(data, options);
-      }, 1000);
-    }
+    // 发送请求
+    request.send();
   </script>
 </body>
 </html>
