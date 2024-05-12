@@ -1,42 +1,86 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <title>实时监控网站数据量</title>
+  <title>游戏</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 500px;
+    }
+
+    .player {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-color: #f00;
+      border: 1px solid #fff;
+      border-radius: 50%;
+      left: 225px;
+      top: 225px;
+    }
+
+    .enemy {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-color: #0f0;
+      border: 1px solid #fff;
+      border-radius: 50%;
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <div class="player"></div>
+    <div class="enemy"></div>
+  </div>
+
   <script>
-    // 目标网站的 URL
-    const targetURL = 'cloudflare.com';
+    var player = document.querySelector('.player');
+    var enemy = document.querySelector('.enemy');
+    var moveSpeed = 5;
 
-    // 轮询间隔（以毫秒为单位）
-    const interval = 1000;
+    document.addEventListener('keydown', function(e) {
+      switch (e.keyCode) {
+        case 37: // left
+          player.style.left = parseInt(player.style.left) - moveSpeed + 'px';
+          break;
+        case 38: // up
+          player.style.top = parseInt(player.style.top) - moveSpeed + 'px';
+          break;
+        case 39: // right
+          player.style.left = parseInt(player.style.left) + moveSpeed + 'px';
+          break;
+        case 40: // down
+          player.style.top = parseInt(player.style.top) + moveSpeed + 'px';
+          break;
+      }
+    });
 
-    // 存储数据量的变量
-    let dataVolume = 0;
+    function moveEnemy() {
+      var x = Math.random() * (450 - 50) + 50;
+      var y = Math.random() * (450 - 50) + 50;
 
-    // 定期调用目标网站并计算数据量
-    setInterval(() => {
-      fetch(targetURL)
-        .then((response) => response.text())
-        .then((data) => {
-          // 计算数据量（以字节为单位）
-          dataVolume = data.length;
+      enemy.style.left = x + 'px';
+      enemy.style.top = y + 'px';
+    }
 
-          // 在页面上显示数据量
-          document.getElementById('data-volume').textContent = dataVolume;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }, interval);
+    setInterval(moveEnemy, 1000);
   </script>
-
-  <h1>网站数据量实时监控</h1>
-  <p>目标网站：<a href="targetURL">targetURL</a></p>
-  <p>轮询间隔：<span id="interval">${interval}ms</span></p>
-  <p>当前数据量：<span id="data-volume">0</span> 字节</p>
 </body>
-
 </html>
