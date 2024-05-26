@@ -1,41 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <title>DVD Logo</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-    }
-    #dvd-logo {
-      position: absolute;
-      width: 100px;
-      height: 100px;
-      background: url(dvd-logo.png) no-repeat;
-      animation: float 5s infinite linear;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translate(0, 0);
-      }
-      25% {
-        transform: translate(100%, 100%);
-      }
-      50% {
-        transform: translate(200%, 0);
-      }
-      75% {
-        transform: translate(100%, -100%);
-      }
-      100% {
-        transform: translate(0, 0);
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS和IP检测</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .result { margin-top: 20px; }
+    </style>
 </head>
 <body>
-  <div id="dvd-logo"></div>
+    <h1>DNS和IP检测</h1>
+    <button id="checkButton">检测</button>
+    <div id="results" class="result"></div>
+
+    <script src="dns-check.js"></script>
 </body>
 </html>
