@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>PayloadContent</key>
+		<array>
+			<dict>
+				<key>DNSSettings</key>
+				<dict>
+					<key>DNSProtocol</key>
+					<string>TLS</string>
+					<key>ServerName</key>
+					<string>dns.nizp.cn</string>
+				</dict>
+				<key>PayloadDescription</key>
+				<string>DoT协议，酷安@E_Lon</string>
+				<key>PayloadDisplayName</key>
+				<string>凯瑞云DNS</string>
+				<key>PayloadIdentifier</key>
+				<string>com.apple.dnsSettings.managed.30f79754-1a1d-41f8-8cb3-8bcac24ab9f3</string>
+				<key>PayloadType</key>
+				<string>com.apple.dnsSettings.managed</string>
+				<key>PayloadUUID</key>
+				<string>10328f5e-4feb-43b8-8c24-a90fb2764dc8</string>
+				<key>PayloadVersion</key>
+				<integer>1</integer>
+			</dict>
+		</array>
+		<key>PayloadDescription</key>
+		<string>DoT协议，酷安@E_Lon</string>
+		<key>PayloadDisplayName</key>
+		<string>凯瑞云DNS</string>
+		<key>PayloadIdentifier</key>
+		<string>5a219084-e0ab-47e1-84ac-8b295b23daa3</string>
+		<key>PayloadRemovalDisallowed</key>
+		<false/>
+		<key>PayloadType</key>
+		<string>Configuration</string>
+		<key>PayloadUUID</key>
+		<string>f43d2bda-e483-479b-ace4-20233994a0eb</string>
+		<key>PayloadVersion</key>
+		<integer>1</integer>
+	</dict>
+</plist>
